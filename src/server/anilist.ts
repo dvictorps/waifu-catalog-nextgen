@@ -10,7 +10,7 @@ export const CHARACTERS_QUERY = gql`
         lastPage
         hasNextPage
       }
-      characters(sort: FAVOURITES_DESC) {
+      characters(sort: FAVOURITES_DESC, gender: FEMALE) {
         id
         name {
           full
