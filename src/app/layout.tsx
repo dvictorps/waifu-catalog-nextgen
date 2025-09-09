@@ -26,6 +26,7 @@ export default function RootLayout({
 				<TRPCReactProvider>
 					<div className="flex h-screen w-screen flex-row">
 						<Sidebar />
+
 						{children}
 					</div>
 				</TRPCReactProvider>
