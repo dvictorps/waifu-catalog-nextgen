@@ -26,7 +26,7 @@ export default function RootLayout({
 				<TRPCReactProvider>
 					<div className="flex h-screen">
 						<Sidebar />
-						<main className="ml-64 flex-1 overflow-auto">{children}</main>
+						<main className="ml-15 flex-1 overflow-auto">{children}</main>
 					</div>
 				</TRPCReactProvider>
 			</body>

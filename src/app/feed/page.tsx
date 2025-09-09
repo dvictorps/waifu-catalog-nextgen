@@ -5,7 +5,7 @@ import { WaifuCard } from "./_components/waifu-card";
 export default function Feed() {
 	const { data: waifus, isLoading } = api.waifu.all.useQuery(
 		{
-			take: 20,
+			take: 99,
 			skip: 0,
 		},
 		{
