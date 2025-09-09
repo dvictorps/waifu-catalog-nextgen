@@ -20,6 +20,7 @@ model Waifu {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   anilistId   Int          @unique
+  favorites   Int          @default(0)
 
   medias      WaifuMedia[]
 

@@ -5,7 +5,6 @@ import { db } from "../../db";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 const REQUEST_INTERVAL_MS = 700; // ~85 req/min
-const mediaIdMap = new Map<number, number>(); // anilistId -> media.id
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -15,7 +14,7 @@ export const waifuRouter = createTRPCRouter({
 		.input(z.object({ startPage: z.number().default(1) }))
 		.mutation(async ({ input }) => {
 			let page = input.startPage;
-			const perPage = 50;
+			const perPage = 25;
 			let processed = 0;
 
 			while (true) {
@@ -24,43 +23,63 @@ export const waifuRouter = createTRPCRouter({
 					perPage,
 				})) as AniListResponse;
 
-				// processar personagens individualmente para evitar timeout
-				for (const c of data.Page.characters) {
+				// filtrar personagens válidos primeiro
+				const validCharacters = data.Page.characters.filter((c) => {
+					// filtrar apenas personagens femininos
+					if (c.gender !== "Female") return false;
+
 					// idade mínima 13
 					const age = c.age ? Number.parseInt(String(c.age), 10) : null;
-					if (age && age < 13) continue;
+					if (age && age < 13) return false;
 
-					try {
-						await db.$transaction(
-							async (tx) => {
-								// upsert da waifu
-								const waifu = await tx.waifu.upsert({
-									where: { anilistId: c.id },
-									update: {
-										name: c.name.full,
-										gender: c.gender ?? "Unknown",
-										description: c.description ?? "",
-										image: c.image?.large ?? "",
-										age: age ?? undefined,
-									},
-									create: {
-										anilistId: c.id,
-										name: c.name.full,
-										gender: c.gender ?? "Unknown",
-										description: c.description ?? "",
-										image: c.image?.large ?? "",
-										age: age ?? undefined,
-									},
-								});
+					return true;
+				});
 
-								// processar mídias em lotes menores
-								const mediaEdges = c.media?.edges ?? [];
-								const mediaBatchSize = 5;
+				// processar em paralelo (lotes de 5 personagens simultâneos)
+				const parallelBatchSize = 5;
+				const characterBatches = [];
 
-								for (let i = 0; i < mediaEdges.length; i += mediaBatchSize) {
-									const mediaBatch = mediaEdges.slice(i, i + mediaBatchSize);
+				for (let i = 0; i < validCharacters.length; i += parallelBatchSize) {
+					characterBatches.push(
+						validCharacters.slice(i, i + parallelBatchSize),
+					);
+				}
 
-									for (const edge of mediaBatch) {
+				// processar cada lote em paralelo
+				for (const batch of characterBatches) {
+					const promises = batch.map(async (c) => {
+						try {
+							await db.$transaction(
+								async (tx) => {
+									// upsert da waifu
+									const waifu = await tx.waifu.upsert({
+										where: { anilistId: c.id },
+										update: {
+											name: c.name.full,
+											gender: c.gender ?? "Unknown",
+											description: c.description ?? "",
+											image: c.image?.large ?? "",
+											age: c.age
+												? Number.parseInt(String(c.age), 10)
+												: undefined,
+											favorites: c.favourites ?? 0,
+										},
+										create: {
+											anilistId: c.id,
+											name: c.name.full,
+											gender: c.gender ?? "Unknown",
+											description: c.description ?? "",
+											image: c.image?.large ?? "",
+											age: c.age
+												? Number.parseInt(String(c.age), 10)
+												: undefined,
+											favorites: c.favourites ?? 0,
+										},
+									});
+
+									// processar mídias
+									const mediaEdges = c.media?.edges ?? [];
+									for (const edge of mediaEdges) {
 										const m = edge.node;
 
 										// garantir mídia no banco
@@ -91,25 +110,30 @@ export const waifuRouter = createTRPCRouter({
 											create: { waifuId: waifu.id, mediaId: media.id },
 										});
 									}
-								}
-							},
-							{
-								timeout: 10000, // 10 segundos por personagem
-							},
-						);
-
-						processed++;
-
-						// log a cada 10 processados
-						if (processed % 10 === 0) {
-							console.log(`✅ ${processed} waifus processadas até agora...`);
+								},
+								{
+									timeout: 15000, // 15 segundos por personagem
+								},
+							);
+							return { success: true, name: c.name.full };
+						} catch (error) {
+							console.error(`❌ Erro ao processar ${c.name.full}:`, error);
+							return { success: false, name: c.name.full, error };
 						}
-					} catch (error) {
-						console.error(
-							`❌ Erro ao processar personagem ${c.name.full}:`,
-							error,
-						);
-						// continua para o próximo personagem
+					});
+
+					// aguardar lote paralelo completar
+					const results = await Promise.allSettled(promises);
+
+					// contar sucessos
+					const successes = results.filter(
+						(r) => r.status === "fulfilled" && r.value.success,
+					).length;
+					processed += successes;
+
+					// log a cada 10 processados
+					if (processed % 10 === 0) {
+						console.log(`✅ ${processed} waifus processadas até agora...`);
 					}
 				}
 
@@ -123,4 +147,14 @@ export const waifuRouter = createTRPCRouter({
 
 			return { message: "Sincronização concluída", processed };
 		}),
+
+	all: publicProcedure.query(async () => {
+		return db.waifu.findMany({
+			select: {
+				id: true,
+				name: true,
+				image: true,
+			},
+		});
+	}),
 });

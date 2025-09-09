@@ -10,7 +10,7 @@ export const CHARACTERS_QUERY = gql`
         lastPage
         hasNextPage
       }
-      characters(sort: FAVOURITES_DESC, gender: FEMALE) {
+      characters(sort: FAVOURITES_DESC) {
         id
         name {
           full
@@ -30,6 +30,7 @@ export const CHARACTERS_QUERY = gql`
           month
           day
         }
+        favourites
         media(perPage: 1, sort: POPULARITY_DESC) {
           edges {
             characterRole

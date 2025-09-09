@@ -32,7 +32,7 @@ const sidebarItems = [
 
 export function Sidebar() {
 	return (
-		<aside className="flex h-full w-1/7 flex-col justify-between bg-purple-950 p-3">
+		<aside className="fixed top-0 left-0 z-10 flex h-screen w-64 flex-col justify-between bg-purple-950 p-3">
 			<div className="flex h-full flex-col">
 				<SidebarHeader />
 				<Separator className="bg-purple-900" />

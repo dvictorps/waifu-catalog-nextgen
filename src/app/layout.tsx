@@ -24,10 +24,9 @@ export default function RootLayout({
 		<html lang="en" className={`${geist.variable}`}>
 			<body>
 				<TRPCReactProvider>
-					<div className="flex h-screen w-screen flex-row">
+					<div className="flex h-screen">
 						<Sidebar />
-
-						{children}
+						<main className="ml-64 flex-1 overflow-auto">{children}</main>
 					</div>
 				</TRPCReactProvider>
 			</body>

@@ -63,6 +63,7 @@ export interface AniListCharacter {
 	age?: string | null;
 	dateOfBirth?: AniListDateOfBirth;
 	media: AniListMedia;
+	favourites?: number;
 }
 
 export interface AniListPage {
