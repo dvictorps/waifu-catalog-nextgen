@@ -1,13 +1,14 @@
 "use client";
 
 import {
-	BookHeartIcon,
-	ChartSpline,
-	ChevronDown,
-	HeartPulseIcon,
+	BookOpenIcon,
+	ChartBarIcon,
+	ChevronDownIcon,
+	HeartIcon,
 	HomeIcon,
 	UserIcon,
-} from "lucide-react";
+} from "@heroicons/react/24/outline";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Separator } from "../separator";
@@ -20,12 +21,12 @@ const sidebarItems = [
 		href: "/",
 	},
 	{
-		icon: BookHeartIcon,
+		icon: BookOpenIcon,
 		label: "Waifus",
 		href: "/feed",
 	},
 	{
-		icon: ChartSpline,
+		icon: ChartBarIcon,
 		label: "Arena",
 		href: "/arena",
 	},
@@ -56,7 +57,7 @@ export function LogoText() {
 	return (
 		<div className="flex items-center justify-center gap-2 px-4">
 			<span className="font-semibold text-white text-xl">Waifu Feed</span>
-			<HeartPulseIcon className="h-8 w-8 flex-shrink-0 text-white " />
+			<HeartIcon className="h-8 w-8 flex-shrink-0 text-white " />
 		</div>
 	);
 }
@@ -94,7 +95,7 @@ export function UserProfile() {
 					<UserIcon className="text-neutral-500" />
 				</div>
 				<span className="font-semibold text-base text-white">John Doe</span>
-				<ChevronDown className="h-4 w-4 text-white" />
+				<ChevronDownIcon className="h-4 w-4 text-white" />
 			</button>
 		</div>
 	);
@@ -121,12 +122,7 @@ export function SidebarFooter() {
 				type="button"
 				className="flex cursor-pointer flex-row items-center gap-2 rounded-md p-2 transition-all duration-200 hover:bg-purple-900"
 			>
-				<img
-					src="https://www.svgrepo.com/show/445786/github.svg"
-					alt="GitHub"
-					className="h-7 w-7 flex-shrink-0 bg-white"
-				/>
-				OI
+				teste
 			</button>
 		</div>
 	);
