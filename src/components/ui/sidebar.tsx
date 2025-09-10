@@ -122,7 +122,7 @@ export function SidebarFooter() {
 				type="button"
 				className="flex cursor-pointer flex-row items-center gap-2 rounded-md p-2 transition-all duration-200 hover:bg-purple-900"
 			>
-				teste
+				{""}
 			</button>
 		</div>
 	);
