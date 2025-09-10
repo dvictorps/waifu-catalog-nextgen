@@ -7,7 +7,7 @@ export const waifuRouter = createTRPCRouter({
 	all: publicProcedure.input(waifuGetInput).query(async ({ input }) => {
 		const { take, skip, searchTerms } = input;
 
-		const [waifus, totalCount] = await Promise.all([
+		const [waifus, totalCount, totalPaginated] = await Promise.all([
 			db.waifu.findMany({
 				orderBy: {
 					favorites: "desc",
@@ -27,15 +27,24 @@ export const waifuRouter = createTRPCRouter({
 				skip,
 			}),
 			db.waifu.count(),
+			db.waifu.count({
+				where: {
+					name: {
+						contains: searchTerms,
+						mode: "insensitive",
+					},
+				},
+			}),
 		]);
 
 		return {
 			data: waifus,
 			pagination: {
 				total: totalCount,
+				totalPaginated,
 				take,
 				skip,
-				hasNextPage: skip + take < totalCount,
+				hasNextPage: skip + take < totalPaginated,
 				hasPreviousPage: skip > 0,
 			},
 		};

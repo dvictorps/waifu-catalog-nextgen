@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 
-interface PaginationData {
-	total: number;
+export interface PaginationData {
+	totalPaginated: number;
 	take: number;
 	skip: number;
 	hasNextPage: boolean;
@@ -87,10 +87,10 @@ export function usePagination(
 				};
 			}
 
-			const { total, hasNextPage, hasPreviousPage } = paginationData;
-			const totalPages = Math.ceil(total / pageSize);
+			const { totalPaginated, hasNextPage, hasPreviousPage } = paginationData;
+			const totalPages = Math.ceil(totalPaginated / pageSize);
 			const startItem = skip + 1;
-			const endItem = Math.min(skip + take, total);
+			const endItem = Math.min(skip + take, totalPaginated);
 			const currentPageItems = endItem - startItem + 1;
 
 			return {
@@ -98,9 +98,9 @@ export function usePagination(
 				hasNextPage,
 				hasPreviousPage,
 				currentPageItems,
-				totalItems: total,
-				startItem: startItem > total ? 0 : startItem,
-				endItem: endItem > total ? total : endItem,
+				totalItems: totalPaginated,
+				startItem: startItem > totalPaginated ? 0 : startItem,
+				endItem: endItem > totalPaginated ? totalPaginated : endItem,
 			};
 		},
 		[pageSize, skip, take],

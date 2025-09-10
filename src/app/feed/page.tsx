@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ControlledPagination } from "~/components/controlled-pagination";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
@@ -18,13 +18,13 @@ import { api } from "~/trpc/react";
 import { WaifuCard } from "./_components/waifu-card";
 import { WaifuGridSkeleton } from "./_components/waifu-grid-skeleton";
 
-const pageSizeOptions = [20, 50, 100];
+const pageSizeOptions = [50, 100, 200];
 
 export default function Feed() {
 	const [searchTerms, setSearchTerms] = useState("");
 	const debouncedSearchTerms = useDebounce(searchTerms, 500);
 
-	const pagination = usePagination({ initialPageSize: 20 });
+	const pagination = usePagination({ initialPageSize: 50 });
 
 	const { data: waifus, isLoading } = api.waifu.all.useQuery(
 		{
@@ -52,7 +52,10 @@ export default function Feed() {
 								<Input
 									placeholder="Search for a character"
 									value={searchTerms}
-									onChange={(e) => setSearchTerms(e.target.value)}
+									onChange={(e) => {
+										setSearchTerms(e.target.value);
+										pagination.firstPage();
+									}}
 									className="w-full"
 								/>
 							</div>
@@ -88,13 +91,18 @@ export default function Feed() {
 							{isLoading && <WaifuGridSkeleton count={8} />}
 
 							{!isLoading && waifus && (
-								<div className="grid w-full gap-1 lg:grid-cols-8">
-									{waifus.data.map((waifu) => (
-										<WaifuCard key={waifu.id} waifu={waifu} />
-									))}
-								</div>
+								<>
+									<div className="grid w-full gap-1 lg:grid-cols-8">
+										{waifus.data.map((waifu) => (
+											<WaifuCard key={waifu.id} waifu={waifu} />
+										))}
+									</div>
+									<ControlledPagination
+										pagination={pagination}
+										paginationData={waifus?.pagination}
+									/>
+								</>
 							)}
-							<ControlledPagination pagination={pagination} />
 						</div>
 					</CardContent>
 				</Card>

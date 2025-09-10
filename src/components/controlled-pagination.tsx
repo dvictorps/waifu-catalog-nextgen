@@ -7,16 +7,19 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "~/components/ui/pagination";
-import type { PaginationObject } from "~/hooks/usePagination";
+import type { PaginationData, PaginationObject } from "~/hooks/usePagination";
 
 interface ControlledPaginationProps {
 	pagination: PaginationObject;
+	paginationData?: PaginationData;
 }
 
 export function ControlledPagination({
 	pagination,
+	paginationData,
 }: ControlledPaginationProps) {
-	const { totalPages, hasPreviousPage, hasNextPage } = pagination.getPageInfo();
+	const { hasPreviousPage, hasNextPage, totalPages } =
+		pagination.getPageInfo(paginationData);
 
 	const generatePageNumbers = () => {
 		if (totalPages <= 1) return null;
@@ -117,36 +120,40 @@ export function ControlledPagination({
 	};
 
 	return (
-		<Pagination>
-			<PaginationContent>
-				<PaginationItem>
-					<PaginationPrevious
-						onClick={(e) => {
-							e.preventDefault();
-							pagination.previousPage();
-						}}
-						className={
-							!hasPreviousPage
-								? "pointer-events-none opacity-50"
-								: "cursor-pointer"
-						}
-					/>
-				</PaginationItem>
+		<div className="flex justify-center">
+			<Pagination>
+				<PaginationContent>
+					<PaginationItem>
+						<PaginationPrevious
+							onClick={(e) => {
+								e.preventDefault();
+								pagination.previousPage();
+							}}
+							className={
+								!hasPreviousPage
+									? "pointer-events-none opacity-50"
+									: "cursor-pointer"
+							}
+						/>
+					</PaginationItem>
 
-				{generatePageNumbers()}
+					{generatePageNumbers()}
 
-				<PaginationItem>
-					<PaginationNext
-						onClick={(e) => {
-							e.preventDefault();
-							pagination.nextPage();
-						}}
-						className={
-							!hasNextPage ? "pointer-events-none opacity-50" : "cursor-pointer"
-						}
-					/>
-				</PaginationItem>
-			</PaginationContent>
-		</Pagination>
+					<PaginationItem>
+						<PaginationNext
+							onClick={(e) => {
+								e.preventDefault();
+								pagination.nextPage();
+							}}
+							className={
+								!hasNextPage
+									? "pointer-events-none opacity-50"
+									: "cursor-pointer"
+							}
+						/>
+					</PaginationItem>
+				</PaginationContent>
+			</Pagination>
+		</div>
 	);
 }
