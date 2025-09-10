@@ -11,8 +11,8 @@ import {
 
 import Image from "next/image";
 import Link from "next/link";
-import { Separator } from "../separator";
 import { Button } from "./button";
+import { Separator } from "./separator";
 
 const sidebarItems = [
 	{

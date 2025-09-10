@@ -1,7 +1,8 @@
 "use client";
-
 import { useState } from "react";
-
+import { ControlledPagination } from "~/components/controlled-pagination";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
 import {
 	Select,
 	SelectContent,
@@ -9,12 +10,9 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "~/components/ui/select";
-
-import { Separator } from "~/components/separator";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { Input } from "~/components/ui/input";
-
+import { Separator } from "~/components/ui/separator";
 import { useDebounce } from "~/hooks/useDebounce";
+import { usePagination } from "~/hooks/usePagination";
 import { TIME_CONSTANTS } from "~/lib/constants/time";
 import { api } from "~/trpc/react";
 import { WaifuCard } from "./_components/waifu-card";
@@ -24,13 +22,14 @@ const pageSizeOptions = [20, 50, 100];
 
 export default function Feed() {
 	const [searchTerms, setSearchTerms] = useState("");
-	const [pageSize, setPageSize] = useState(20);
 	const debouncedSearchTerms = useDebounce(searchTerms, 500);
+
+	const pagination = usePagination({ initialPageSize: 20 });
 
 	const { data: waifus, isLoading } = api.waifu.all.useQuery(
 		{
-			take: pageSize,
-			skip: 0,
+			take: pagination.take,
+			skip: pagination.skip,
 			searchTerms: debouncedSearchTerms,
 		},
 		{
@@ -48,41 +47,43 @@ export default function Feed() {
 				<Card className="w-7xl border-none bg-slate-950">
 					<CardHeader>
 						<CardTitle className="text-white">Character list</CardTitle>
+						<div className="mt-5 flex w-full flex-row justify-between gap-4">
+							<div className="w-full">
+								<Input
+									placeholder="Search for a character"
+									value={searchTerms}
+									onChange={(e) => setSearchTerms(e.target.value)}
+									className="w-full"
+								/>
+							</div>
+							<div>
+								<Select
+									onValueChange={(value) =>
+										pagination.setPageSize(Number(value))
+									}
+									value={pagination.pageSize.toString()}
+								>
+									<SelectTrigger className="flex items-start justify-between">
+										<div className="flex flex-row gap-2">
+											<span className="font-normal text-neutral-400">
+												Page size:
+											</span>
+											<SelectValue placeholder="Select a page size" />
+										</div>
+									</SelectTrigger>
+									<SelectContent>
+										{pageSizeOptions.map((size) => (
+											<SelectItem key={size} value={size.toString()}>
+												{size}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</div>
+						</div>
 					</CardHeader>
 					<CardContent>
 						<div className="flex w-full flex-col gap-4">
-							<div className="flex w-full flex-row justify-between gap-4">
-								<div className="w-full">
-									<Input
-										placeholder="Search for a character"
-										value={searchTerms}
-										onChange={(e) => setSearchTerms(e.target.value)}
-										className="w-full"
-									/>
-								</div>
-								<div>
-									<Select
-										onValueChange={(value) => setPageSize(Number(value))}
-										value={pageSize.toString()}
-									>
-										<SelectTrigger className="flex items-start justify-between">
-											<div className="flex flex-row gap-2">
-												<span className="font-normal text-neutral-400">
-													Page size:
-												</span>
-												<SelectValue placeholder="Select a page size" />
-											</div>
-										</SelectTrigger>
-										<SelectContent>
-											{pageSizeOptions.map((size) => (
-												<SelectItem key={size} value={size.toString()}>
-													{size}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-								</div>
-							</div>
 							<Separator className="my-4" />
 							{isLoading && <WaifuGridSkeleton count={8} />}
 
@@ -93,6 +94,7 @@ export default function Feed() {
 									))}
 								</div>
 							)}
+							<ControlledPagination pagination={pagination} />
 						</div>
 					</CardContent>
 				</Card>
