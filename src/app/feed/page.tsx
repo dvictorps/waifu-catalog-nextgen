@@ -1,4 +1,5 @@
 "use client";
+import { TIME_CONSTANTS } from "~/lib/constants/time";
 import { api } from "~/trpc/react";
 import { WaifuCard } from "./_components/waifu-card";
 
@@ -9,8 +10,8 @@ export default function Feed() {
 			skip: 0,
 		},
 		{
-			staleTime: 10 * 60 * 1000,
-			gcTime: 30 * 60 * 1000,
+			staleTime: TIME_CONSTANTS.ONE_HOUR,
+			gcTime: TIME_CONSTANTS.ONE_HOUR,
 		},
 	);
 

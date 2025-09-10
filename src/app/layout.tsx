@@ -17,17 +17,11 @@ const geist = Geist({
 	variable: "--font-geist-sans",
 });
 
-const comicRelief = Comic_Neue({
-	subsets: ["latin"],
-	weight: ["300", "400", "700"],
-	variable: "--font-comic-relief",
-});
-
 export default function RootLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang="en" className={`${comicRelief.variable}`}>
+		<html lang="en" className={`${geist.variable}`}>
 			<body>
 				<TRPCReactProvider>
 					<div className="flex h-screen">
