@@ -20,7 +20,7 @@ export default function Feed() {
 
 	return (
 		<div className="flex gap-4">
-			<div className="grid items-start lg:grid-cols-6 lg:px-20 lg:py-20">
+			<div className="grid w-full lg:grid-cols-6 lg:px-20 lg:py-20">
 				{waifus.data.map((waifu) => (
 					<WaifuCard key={waifu.id} waifu={waifu} />
 				))}

@@ -1,7 +1,7 @@
 import "~/styles/globals.css";
 
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Comic_Neue, Geist } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { Sidebar } from "../components/ui/sidebar";
@@ -17,16 +17,22 @@ const geist = Geist({
 	variable: "--font-geist-sans",
 });
 
+const comicRelief = Comic_Neue({
+	subsets: ["latin"],
+	weight: ["300", "400", "700"],
+	variable: "--font-comic-relief",
+});
+
 export default function RootLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang="en" className={`${geist.variable}`}>
+		<html lang="en" className={`${comicRelief.variable}`}>
 			<body>
 				<TRPCReactProvider>
 					<div className="flex h-screen">
 						<Sidebar />
-						<main className="ml-15 flex-1 overflow-auto">{children}</main>
+						<main className="mt-15 ml-15 flex-1 overflow-auto">{children}</main>
 					</div>
 				</TRPCReactProvider>
 			</body>

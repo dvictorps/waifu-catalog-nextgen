@@ -3,10 +3,9 @@
 import {
 	BookHeartIcon,
 	ChartSpline,
-	HeartPulse,
+	ChevronDown,
 	HeartPulseIcon,
 	HomeIcon,
-	LogOutIcon,
 	UserIcon,
 } from "lucide-react";
 import Image from "next/image";
@@ -34,46 +33,46 @@ const sidebarItems = [
 
 export function Sidebar() {
 	return (
-		<aside className="group fixed top-0 left-0 z-10 flex h-screen w-15 flex-col justify-between bg-purple-950 p-3 transition-all duration-300 hover:w-64">
-			<div className="flex h-full flex-col">
-				<SidebarHeader />
-				<Separator className="bg-purple-900" />
-				<SidebarList />
+		<div>
+			<div className="fixed top-0 left-0 z-11 flex h-15 w-screen items-center justify-between bg-purple-950">
+				<LogoText />
+				<div className="mr-10">
+					<UserProfile />
+				</div>
 			</div>
-		</aside>
+			<aside className="group fixed top-0 left-0 z-10 mt-15 flex h-[calc(100vh-60px)] w-15 flex-col justify-between overflow-hidden bg-purple-950 transition-all duration-300 hover:w-50">
+				<div className="flex h-full flex-col">
+					<SidebarList />
+					<Separator className="my-2 ml-2 w-[90%] bg-purple-900" />
+					<SidebarLogo />
+				</div>
+				<SidebarFooter />
+			</aside>
+		</div>
 	);
 }
 
-export function SidebarHeader() {
+export function LogoText() {
 	return (
-		<div className="flex min-h-[150px] items-center justify-center">
-			<Image
-				src="/images/waifu-catalog-logo.png"
-				alt="Logo"
-				width={150}
-				height={150}
-				className="hidden group-hover:block"
-			/>
-			<HeartPulse className="block h-10 w-10 text-white group-hover:hidden" />
+		<div className="flex items-center justify-center gap-2 px-4">
+			<span className="font-semibold text-white text-xl">Waifu Feed</span>
+			<HeartPulseIcon className="h-8 w-8 flex-shrink-0 text-white " />
 		</div>
 	);
 }
 
 export function SidebarList() {
 	return (
-		<ul className="flex flex-col gap-4">
+		<ul className="flex flex-col gap-2">
 			{sidebarItems.map((item) => (
-				<li
-					key={item.href}
-					className="flex min-h-10 items-center justify-center group-hover:block group-hover:items-baseline group-hover:justify-normal"
-				>
-					<Link href={item.href}>
+				<li key={item.href} className="relative flex min-h-10 items-center">
+					<Link href={item.href} className="w-full">
 						<Button
 							variant="ghost"
-							className="mt-1 w-full cursor-pointer justify-start gap-2 text-white hover:bg-purple-900"
+							className="mt-1 h-12 w-full cursor-pointer items-center justify-start gap-2 text-white transition-all duration-300 hover:bg-purple-900"
 						>
-							<item.icon className="min-h-6 min-w-6" />
-							<span className="hidden transition-all duration-300 group-hover:block">
+							<item.icon className="h-7 w-7 flex-shrink-0" />
+							<span className="w-0 whitespace-nowrap font-semibold text-base opacity-0 transition-all duration-300 group-hover:w-auto group-hover:opacity-100">
 								{item.label}
 							</span>
 						</Button>
@@ -81,5 +80,54 @@ export function SidebarList() {
 				</li>
 			))}
 		</ul>
+	);
+}
+
+export function UserProfile() {
+	return (
+		<div>
+			<button
+				type="button"
+				className="flex cursor-pointer flex-row items-center gap-2 rounded-md p-2 transition-all duration-200 hover:bg-purple-900"
+			>
+				<div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-200">
+					<UserIcon className="text-neutral-500" />
+				</div>
+				<span className="font-semibold text-base text-white">John Doe</span>
+				<ChevronDown className="h-4 w-4 text-white" />
+			</button>
+		</div>
+	);
+}
+
+export function SidebarLogo() {
+	return (
+		<div className="mt-2 ml-10 w-[100px] opacity-0 transition-all duration-300 group-hover:opacity-100">
+			<Image
+				src="/images/waifu-catalog-logo.png"
+				alt="Logo"
+				width={100}
+				height={100}
+				className="h-auto w-full"
+			/>
+		</div>
+	);
+}
+
+export function SidebarFooter() {
+	return (
+		<div>
+			<button
+				type="button"
+				className="flex cursor-pointer flex-row items-center gap-2 rounded-md p-2 transition-all duration-200 hover:bg-purple-900"
+			>
+				<img
+					src="https://www.svgrepo.com/show/445786/github.svg"
+					alt="GitHub"
+					className="h-7 w-7 flex-shrink-0 bg-white"
+				/>
+				OI
+			</button>
+		</div>
 	);
 }
