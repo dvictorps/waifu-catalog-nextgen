@@ -7,14 +7,16 @@ interface WaifuCardProps {
 }
 
 export function WaifuCard({ waifu }: WaifuCardProps) {
+	const waifuName = waifu.name.split(" ").slice(0, 2).join(" ");
+
 	return (
-		<div className="group h-56 w-60 bg-transparent p-4">
-			<div className="flex w-full flex-col items-center ">
+		<div className="group h-60 w-40 rounded-md border border-neutral-500 bg-purple-200 p-4">
+			<div className="flex h-full w-full flex-col items-center justify-center">
 				<h1
-					className="text-center font-bold text-white text-xl transition-all duration-300 group-hover:scale-110 group-hover:text-blue-400"
+					className="flex min-h-[56px] items-center justify-center text-center font-bold text-white text-xl transition-all duration-300 group-hover:scale-110 group-hover:text-blue-400"
 					style={{ WebkitTextStroke: "1px #000" }}
 				>
-					{waifu.name}
+					{waifuName}
 				</h1>
 				<Image
 					src={waifu.image}

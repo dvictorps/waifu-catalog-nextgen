@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CHARACTERS_QUERY, anilist } from "~/server/graphql/anilist";
+import { CHARACTERS_QUERY, anilist } from "~/server/api/graphql/anilist";
 import type { AniListResponse } from "~/types/anilist";
 import { db } from "../../db";
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -9,7 +9,7 @@ const REQUEST_INTERVAL_MS = 700; // ~85 req/min
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export const syncRouter = createTRPCRouter({
-	sync: publicProcedure
+	syncWaifus: publicProcedure
 		.input(z.object({ startPage: z.number().default(1) }))
 		.mutation(async ({ input }) => {
 			let page = input.startPage;

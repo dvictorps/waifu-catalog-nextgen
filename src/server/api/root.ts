@@ -1,3 +1,4 @@
+import { syncRouter } from "~/server/api/routers/sync";
 import { waifuRouter } from "~/server/api/routers/waifu";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
@@ -8,6 +9,7 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
 	waifu: waifuRouter,
+	sync: syncRouter,
 });
 
 // export type definition of API
