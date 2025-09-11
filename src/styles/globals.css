@@ -115,6 +115,22 @@
 	--sidebar-ring: oklch(0.708 0 0);
 }
 
+@layer utilities {
+	@keyframes pulse-glow {
+		0%,
+		100% {
+			box-shadow: 0 0 0px 0 var(--tw-shadow-color);
+		}
+		50% {
+			box-shadow: 0 0 20px 0 var(--tw-shadow-color);
+		}
+	}
+
+	.animate-pulse-glow {
+		animation: pulse-glow 1.5s infinite ease-in-out;
+	}
+}
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;

@@ -49,7 +49,7 @@ export default function WaifuListPage() {
 				<Card className="w-7xl border-none bg-slate-950">
 					<CardHeader>
 						<CardTitle>
-							<h1 className="font-new-rocker font-normal text-2xl text-white">
+							<h1 className=" font-normal text-2xl text-white">
 								{waifu?.name}
 							</h1>
 						</CardTitle>

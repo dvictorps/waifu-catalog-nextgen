@@ -29,7 +29,7 @@ export function WaifuCard({ waifu }: WaifuCardProps) {
 						alt={waifu.name}
 						width={100}
 						height={150}
-						className="rounded-md shadow-[0_0_30px] shadow-white/50 "
+						className="rounded-md border-2 border-white "
 					/>
 				</div>
 			</Link>
