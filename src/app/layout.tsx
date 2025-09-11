@@ -1,7 +1,7 @@
 import "~/styles/globals.css";
 
 import type { Metadata } from "next";
-import { Comic_Neue, DynaPuff, Geist } from "next/font/google";
+import { Comic_Neue, DynaPuff, Geist, New_Rocker } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { Sidebar } from "../components/ui/sidebar";
@@ -36,9 +36,9 @@ export default function RootLayout({
 		<html lang="en" className={`${dynaPuff.className} dark`}>
 			<body>
 				<TRPCReactProvider>
-					<div className="flex bg-linear-to-b from-slate-900 to-slate-950">
+					<div className="flex min-h-screen bg-linear-to-b from-slate-900 to-slate-950">
 						<Sidebar />
-						<main className="mt-15 ml-15 min-h-screen flex-1">{children}</main>
+						<main className="mt-15 ml-15 flex-1">{children}</main>
 					</div>
 				</TRPCReactProvider>
 			</body>
