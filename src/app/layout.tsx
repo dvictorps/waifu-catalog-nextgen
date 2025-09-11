@@ -1,7 +1,7 @@
 import "~/styles/globals.css";
 
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Comic_Neue, DynaPuff, Geist } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { Sidebar } from "../components/ui/sidebar";
@@ -14,19 +14,31 @@ export const metadata: Metadata = {
 
 const geist = Geist({
 	subsets: ["latin"],
-	variable: "--font-geist-sans",
+	display: "swap",
+});
+
+const comicNeue = Comic_Neue({
+	subsets: ["latin"],
+	display: "swap",
+	weight: ["300", "400", "700"],
+});
+
+const dynaPuff = DynaPuff({
+	subsets: ["latin"],
+	display: "swap",
+	weight: ["400", "700", "500", "600"],
 });
 
 export default function RootLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang="en" className={`${geist.variable}`}>
+		<html lang="en" className={`${dynaPuff.className} dark`}>
 			<body>
 				<TRPCReactProvider>
-					<div className="flex h-screen w-screen flex-row">
+					<div className="flex bg-linear-to-b from-slate-900 to-slate-950">
 						<Sidebar />
-						{children}
+						<main className="mt-15 ml-15 min-h-screen flex-1">{children}</main>
 					</div>
 				</TRPCReactProvider>
 			</body>

@@ -5,6 +5,17 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+	images: {
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "s4.anilist.co",
+				port: "",
+				pathname: "/file/anilistcdn/**",
+			},
+		],
+	},
+};
 
 export default config;
