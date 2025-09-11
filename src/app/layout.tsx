@@ -12,17 +12,6 @@ export const metadata: Metadata = {
 	icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const geist = Geist({
-	subsets: ["latin"],
-	display: "swap",
-});
-
-const comicNeue = Comic_Neue({
-	subsets: ["latin"],
-	display: "swap",
-	weight: ["300", "400", "700"],
-});
-
 const dynaPuff = DynaPuff({
 	subsets: ["latin"],
 	display: "swap",
