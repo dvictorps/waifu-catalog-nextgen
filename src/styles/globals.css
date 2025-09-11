@@ -5,6 +5,7 @@
 @theme {
 	--font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
 		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--font-new-rocker: "New Rocker", cursive;
 }
 
 @theme inline {

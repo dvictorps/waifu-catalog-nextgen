@@ -23,7 +23,7 @@ const sidebarItems = [
 	{
 		icon: BookOpenIcon,
 		label: "Waifus",
-		href: "/feed",
+		href: "/waifu-list",
 	},
 	{
 		icon: ChartBarIcon,
