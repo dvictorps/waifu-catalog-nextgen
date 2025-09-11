@@ -94,7 +94,7 @@ export function UserProfile() {
 				<div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-200">
 					<UserIcon className="h-5 w-5 text-neutral-500" />
 				</div>
-				<span className="font-semibold text-base text-white">John Doe</span>
+				<span className="font-semibold text-base text-white">John </span>
 				<ChevronDownIcon className="h-4 w-4 text-white" />
 			</button>
 		</div>
