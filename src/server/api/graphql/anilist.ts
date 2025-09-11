@@ -1,6 +1,7 @@
 import { GraphQLClient, gql } from "graphql-request";
+import { anilistApiUrl } from "~/lib/constants/anilist";
 
-export const anilist = new GraphQLClient("https://graphql.anilist.co");
+export const anilist = new GraphQLClient(anilistApiUrl);
 
 export const CHARACTERS_QUERY = gql`
   query ($page: Int, $perPage: Int) {

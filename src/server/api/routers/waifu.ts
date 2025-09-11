@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { anilistDefaultImage } from "~/lib/constants/anilist";
 import { db } from "../../db";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { waifuGetInput } from "./inputs/waifuInputs";
@@ -17,6 +17,9 @@ export const waifuRouter = createTRPCRouter({
 						contains: searchTerms,
 						mode: "insensitive",
 					},
+					image: {
+						not: anilistDefaultImage,
+					},
 				},
 				select: {
 					id: true,
@@ -32,6 +35,9 @@ export const waifuRouter = createTRPCRouter({
 					name: {
 						contains: searchTerms,
 						mode: "insensitive",
+					},
+					image: {
+						not: anilistDefaultImage,
 					},
 				},
 			}),

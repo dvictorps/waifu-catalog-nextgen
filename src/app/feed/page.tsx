@@ -16,7 +16,8 @@ import { usePagination } from "~/hooks/usePagination";
 import { TIME_CONSTANTS } from "~/lib/constants/time";
 import { api } from "~/trpc/react";
 import { WaifuCard } from "./_components/waifu-card";
-import { WaifuGridSkeleton } from "./_components/waifu-grid-skeleton";
+
+import { WaifuCardSkeleton } from "./_components/waifu-skeleton";
 
 const pageSizeOptions = [50, 100, 200];
 
@@ -88,21 +89,21 @@ export default function Feed() {
 					<CardContent>
 						<div className="flex w-full flex-col gap-4">
 							<Separator className="my-4" />
-							{isLoading && <WaifuGridSkeleton count={8} />}
-
-							{!isLoading && waifus && (
-								<>
-									<div className="grid w-full gap-1 lg:grid-cols-8">
-										{waifus.data.map((waifu) => (
-											<WaifuCard key={waifu.id} waifu={waifu} />
-										))}
-									</div>
-									<ControlledPagination
-										pagination={pagination}
-										paginationData={waifus?.pagination}
-									/>
-								</>
+							{isLoading && <WaifuCardSkeleton />}
+							<div className="grid w-full gap-1 lg:grid-cols-8">
+								{!isLoading &&
+									waifus &&
+									waifus.data.map((waifu) => (
+										<WaifuCard key={waifu.id} waifu={waifu} />
+									))}
+							</div>
+							{!isLoading && waifus?.data?.length === 0 && (
+								<p className="text-center text-white">No waifus found</p>
 							)}
+							<ControlledPagination
+								pagination={pagination}
+								paginationData={waifus?.pagination}
+							/>
 						</div>
 					</CardContent>
 				</Card>

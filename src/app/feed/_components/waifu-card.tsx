@@ -22,7 +22,7 @@ export function WaifuCard({ waifu }: WaifuCardProps) {
 					src={waifu.image}
 					alt={waifu.name}
 					width={100}
-					height={100}
+					height={150}
 					className="rounded-md shadow-[0_0_30px] shadow-white/50 transition-all duration-400 group-hover:scale-110 "
 				/>
 			</div>
