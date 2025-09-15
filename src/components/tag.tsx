@@ -16,13 +16,13 @@ export function Tag({ children, className, rarity }: props) {
 		Uncommon: "font-normal",
 		Rare: "font-normal",
 		Epic: "font-normal",
-		Legendary: `${newRocker.className}`,
+		Legendary: `${newRocker.className} animate-pulse-glow shadow-red-500`,
 	};
 
 	return (
 		<div
 			className={cn(
-				"rounded-md px-2 py-1",
+				"rounded-lg border-2 border-white px-2 py-1",
 				tagRarity,
 				fontRarity[rarity ?? "Common"],
 				className,
